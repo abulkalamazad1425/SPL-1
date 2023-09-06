@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1693980598 source:c:\users\dell\desktop\3rdsemlab\spl-1\cricket_scoreboard\match_schedule.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+
+1693992313 source:c:\users\dell\desktop\3rdsemlab\spl-1\cricket_scoreboard\mainfunc.c
+	<stdio.h>
+
+1693977943 source:c:\users\dell\desktop\3rdsemlab\spl-1\cricket_scoreboard\premierleague-scheduling.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
