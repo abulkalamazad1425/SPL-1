@@ -13,8 +13,8 @@ int main(){
                 UpcomingMatch();
             else if(option == 2)
                 PremierLeagueScheduling();
-            else if(option == 3);
-                //PlayerInformation();
+            else if(option == 3)
+                PlayerInformation();
             else
                 printf("Choose correctly");
     }
