@@ -34,6 +34,9 @@
 		<Unit filename="Match_schedule.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="PlayerInformation.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="PremierLeague-Scheduling.c">
 			<Option compilerVar="CC" />
 		</Unit>
