@@ -31,6 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Match_Score_Update.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Match_schedule.c">
 			<Option compilerVar="CC" />
 		</Unit>
