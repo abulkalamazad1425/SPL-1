@@ -36,9 +36,12 @@ int B_team,F_team;
 int toss;
 int strk,Striker1 = 0,Striker2 = 1,bow = 0;
 
-void getTeamAndPlayerNames(){
-    FILE *PNP = fopen("TeamAndPlaying11.txt","r");
-    if(PNP == NULL){
+void getTeamAndPlayerNames()
+{
+    FILE *PNP;
+    PNP = fopen("TeamAndPlaying11.txt","r");
+    if(PNP == NULL)
+    {
         printf("\n\"TeamAndPlaying11.txt\" file has an error\n");
         exit(1);
     }
@@ -46,8 +49,11 @@ void getTeamAndPlayerNames(){
     printf("%s\n",team[0].name);
     fscanf(PNP,"%s",team[1].name);
     printf("%s\n",team[1].name);
-    for(int i=0;i<2;i++){
-        for(int j=0;j<11;j++){
+
+    for(int i=0;i<2;i++)
+    {
+        for(int j=0;j<11;j++)
+        {
             fscanf(PNP,"%s",team[i].batsman[j].playerName);
             printf("%s\n",team[i].batsman[j].playerName);
         }
@@ -62,26 +68,26 @@ void ScoreUpdate()
 {
     FILE *WS;
      WS = fopen("ScoreFile.txt","w");
-    if(WS == NULL){
+    if(WS == NULL)
+    {
         printf("Error occur ...\nCan't open ScoreFile.txt\n");
         exit(0);
     }
-
-    printf("\n%s is going to bat now....\n\n",team[B_team].name);
-
     B_team = 0;
     F_team = 1;
-    for(int i=0;i<number_of_overs-1;i++)
+    printf("\n%s is going to bat now....\n\n",team[B_team].name);
+    DisplayScoreBoard();
+    for(int i=0;i<number_of_overs;i++)
     {
             team[B_team].total_over[0] = i;
 
             int temp;
             for(int j=1;j<=6;j++)
             {
-                team[B_team].total_over[1] = j;
-                team[F_team].bowler[bow].over[1]=j;
+
                 //printf("\nOver %d.%d \nEnter  the score : ",i,j);
                 //scanf("%d",&temp);
+                srand(time(0));
                 temp = rand()%11;
                 fprintf(WS,"Ball %d.%d : %d\t",i,j,temp);
 
@@ -89,7 +95,7 @@ void ScoreUpdate()
                 {
                     j--;
                     team[B_team].total_runs += 1;
-                    team[F_team].bowler[bow].runsLossed += temp;
+                    team[F_team].bowler[bow].runsLossed += 1;
 
                     //temp = 1;
                     //team[B_team].batsman[k].runsScored -= temp;
@@ -103,7 +109,8 @@ void ScoreUpdate()
 
                       int extra = rand()%7 ;
                       fprintf(WS,"extra : %d\t",extra);
-                      if (extra != 5){
+                      if (extra != 5)
+                      {
                              //temp=6;
                             team[B_team].total_runs += extra;
                             team[F_team].bowler[bow].runsLossed += extra;
@@ -112,11 +119,14 @@ void ScoreUpdate()
 
                       }
                       team[B_team].batsman[strk].played_ball++;
-                      if(extra ==1 || extra ==3){
-                            if(strk == Striker1){
+                      if(extra ==1 || extra ==3)
+                      {
+                            if(strk == Striker1)
+                            {
                                 strk = Striker2;
                             }
-                            else{
+                            else
+                            {
                                 strk = Striker1;
                             }
                       }
@@ -139,24 +149,28 @@ void ScoreUpdate()
                       team[F_team].bowler[bow].wicket++;
                       int out = rand()%2 +1;
                       fprintf(WS,"out %d\t",out);
-                      if(strk = Striker1){
+                      if(strk = Striker1)
+                      {
                             Striker1 = Striker2;
                             Striker2++;
                       }
                       else
                         Striker2++;
 
-                      if(out == 1){
+                      if(out == 1)
+                      {
                             printf("\t\tBold Out\n");
 
 
                             strk = Striker2;
                       }
-                      else if(out == 2){
+                      else if(out == 2)
+                      {
                             printf("\n\t\tCatch Out\n");
 
                             int run_half = rand()%2;
-                            if(run_half){
+                            if(run_half)
+                            {
                                 strk = Striker1;
                             }
                             else
@@ -167,7 +181,8 @@ void ScoreUpdate()
                         break;
 
                 }
-                else if(temp ==10){
+                else if(temp ==10)
+                {
                     printf("\n\t\tRun out\n");
                     team[B_team].batsman[strk].played_ball++;
                     team[B_team].Num_Wicket++;
@@ -187,9 +202,8 @@ void ScoreUpdate()
                     if(team[B_team].Num_Wicket==10)
                         break;
                 }
-                else{
-
-
+                else
+                {
                         if(temp == 6)
                         {
                             team[B_team].sixes++;
@@ -206,30 +220,35 @@ void ScoreUpdate()
                         team[B_team].batsman[strk].played_ball++;
 
                 }
+                team[B_team].total_over[1] = j;
+                team[F_team].bowler[bow].over[1]=j;
                 DisplayScoreBoard();
 
 
 
-                if( temp==1 || temp ==3 ){
-                    if(strk == Striker1){
+                if( temp==1 || temp ==3 )
+                {
+                    if(strk == Striker1)
+                    {
                         strk = Striker2;
                     }
-                    else{
+                    else
                         strk = Striker1;
-                    }
-
                 }
+
                 fprintf(WS,"\n");
-                printf("\nNext..");
-                getchar();
+                //printf("\nNext..");
+                //getchar();
 
             }
             if(team[B_team].Num_Wicket==10)
                         break;
-            if(strk == Striker1){
+            if(strk == Striker1)
+            {
                 strk = Striker2;
             }
-            else{
+            else
+            {
                 strk = Striker1;
             }
             team[F_team].bowler[bow].over[0]++;
@@ -245,7 +264,8 @@ void ScoreUpdate()
     Striker1 = 0;
     Striker2 = 1;
     bow = 0;
-    printf("\n\n\n%s is going to bat now....\n\n",team[B_team].name);
+    printf("\n%s is going to bat now....\n\n",team[B_team].name);
+    DisplayScoreBoard();
     for(int i=0;i<number_of_overs;i++)
     {
             team[B_team].total_over[0] = i;
@@ -264,7 +284,7 @@ void ScoreUpdate()
                 {
                     j--;
                     team[B_team].total_runs += 1;
-                    team[F_team].bowler[bow].runsLossed += temp;
+                    team[F_team].bowler[bow].runsLossed += 1;
 
                     //temp = 1;
                     //team[B_team].batsman[k].runsScored -= temp;
@@ -278,7 +298,8 @@ void ScoreUpdate()
 
                       int extra = rand()%7 ;
                       fprintf(WS,"extra : %d\t",extra);
-                      if (extra != 5){
+                      if (extra != 5)
+                      {
                              //temp=6;
                             team[B_team].total_runs += extra;
                             team[F_team].bowler[bow].runsLossed += extra;
@@ -287,8 +308,10 @@ void ScoreUpdate()
 
                       }
                       team[B_team].batsman[strk].played_ball++;
-                      if(extra ==1 || extra ==3){
-                            if(strk == Striker1){
+                      if(extra ==1 || extra ==3)
+                      {
+                            if(strk == Striker1)
+                            {
                                 strk = Striker2;
                             }
                             else{
@@ -314,20 +337,21 @@ void ScoreUpdate()
                       team[F_team].bowler[bow].wicket++;
                       int out = rand()%2 +1;
                       fprintf(WS,"out %d\t",out);
-                      if(strk = Striker1){
+                      if(strk = Striker1)
+                      {
                             Striker1 = Striker2;
                             Striker2++;
                       }
                       else
                         Striker2++;
 
-                      if(out == 1){
+                      if(out == 1)
+                      {
                             printf("\t\tBold Out\n");
-
-
                             strk = Striker2;
                       }
-                      else if(out == 2){
+                      else if(out == 2)
+                      {
                             printf("\n\t\tCatch Out\n");
 
                             int run_half = rand()%2;
@@ -342,19 +366,22 @@ void ScoreUpdate()
                         break;
 
                 }
-                else if(temp ==10){
+                else if(temp ==10)
+                {
                     printf("\n\t\tRun out\n");
                     team[B_team].batsman[strk].played_ball++;
                     team[B_team].Num_Wicket++;
                     int r_out = rand()%2+1;
-                    if(r_out == 1){
+                    if(r_out == 1)
+                    {
                         Striker1 = Striker2;
                         Striker2++;
                     }
                     else
                         Striker2++;
                     int batting_end = rand()%2;
-                    if(batting_end){
+                    if(batting_end)
+                    {
                         strk = Striker2;
                     }
                     else
@@ -401,23 +428,13 @@ void ScoreUpdate()
 
                 }
                 fprintf(WS,"\n");
-                printf("\nNext..");
-                getchar();
+                //printf("\nNext..");
+                //getchar();
 
             }
-            if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs)){
-                    if(team[B_team].total_runs > team[F_team].total_runs){
-                        printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d wicket...\n",team[B_team].name,(10-team[B_team].Num_Wicket));
-                    }
-                    else if(team[B_team].total_runs > team[F_team].total_runs){
-                        printf("\n\n\t\t\t\tMATCH DRAWN....\n");
-                    }
-                    else{
-                        printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d runs...\n",team[F_team].name,(team[F_team].total_runs-team[B_team].total_runs));
-
-                    }
-
-                        break;
+             if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs))
+            {
+                break;
             }
             if(strk == Striker1){
                 strk = Striker2;
@@ -431,13 +448,33 @@ void ScoreUpdate()
                 bow=0;
             }
     }
+    //if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs)){
+                    if(team[B_team].total_runs > team[F_team].total_runs){
+                        printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d wicket...\n",team[B_team].name,(10-team[B_team].Num_Wicket));
+                    }
+                    else if(team[B_team].total_runs == team[F_team].total_runs){
+                        printf("\n\n\t\t\t\tMATCH DRAWN....\n");
+                    }
+                    else{
+                        printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d runs...\n",team[F_team].name,(team[F_team].total_runs-team[B_team].total_runs));
+
+                    }
+
+
+            //}
     fclose(WS);
 }
 void DisplayScoreBoard(){
-    printf("Team - 1: \n");
-    printf("Total : %d\tWicket : %d\tPlayer[%d]\tRun Lossed : %d\n",team[B_team].total_runs,team[B_team].Num_Wicket,strk,team[B_team].batsman[strk].runsScored);
-    printf("over %d.%d\n",team[F_team].bowler[bow].over[0],team[F_team].bowler[bow].over[1]);
-    return;
+    printf("\n-------------------------------------------------------------------------------------\n");
+    printf("%s vs  | %s | %d / %d.%d | \t",team[F_team].name,team[B_team].name,team[B_team].total_runs,team[B_team].total_over[0],team[B_team].total_over[1]);
+    printf("%s | %d / %d.%d  |\n",team[F_team].bowler[bow].playerName,team[F_team].bowler[bow].runsLossed,team[F_team].bowler[bow].over[0],team[F_team].bowler[bow].over[1]);
+    printf("-------------------------------------------------------------------------------------\n");
+    printf("%s | %d / %d  | ",team[B_team].batsman[Striker1].playerName,team[B_team].batsman[Striker1].runsScored,team[B_team].batsman[Striker1].played_ball);
+    printf("%s | %d / %d  |\n",team[B_team].batsman[Striker2].playerName,team[B_team].batsman[Striker2].runsScored,team[B_team].batsman[Striker2].played_ball);
+    printf("-------------------------------------------------------------------------------------\n");
+
+    printf("NEXT");
+    getchar();
 }
 /*
 int main(){
