@@ -55,11 +55,11 @@ void getTeamAndPlayerNames()
         for(int j=0;j<11;j++)
         {
             fscanf(PNP,"%s",team[i].batsman[j].playerName);
-            printf("%s\n",team[i].batsman[j].playerName);
+            //printf("%s\n",team[i].batsman[j].playerName);
         }
         for(int j=0;j<5;j++){
             fscanf(PNP,"%s",team[i].bowler[j].playerName);
-            printf("%s\n",team[i].bowler[j].playerName);
+            //printf("%s\n",team[i].bowler[j].playerName);
         }
     }
     fclose(PNP);
@@ -194,6 +194,7 @@ void ScoreUpdate()
                         int r_out = rand()%3+1;
                         team[B_team].batsman[strk].runsScored += r_out-1;
                         team[B_team].total_runs += r_out-1;
+                        team[F_team].bowler[bow].runsLossed +=r_out-1;
                         if(r_out == 1 || r_out==3){
                             if(strk == Striker1){
                                 Striker2++;
@@ -221,6 +222,7 @@ void ScoreUpdate()
                         int r_out = rand()%3+1;
                         team[B_team].batsman[strk].runsScored += r_out-1;
                         team[B_team].total_runs += r_out-1;
+                        team[F_team].bowler[bow].runsLossed +=r_out-1;
                         if(r_out == 1 || r_out==3){
                             if(strk == Striker2){
                                 Striker2++;
@@ -316,7 +318,7 @@ void ScoreUpdate()
     for(int i=0;i<number_of_overs;i++)
     {
             team[B_team].total_over[0] = i;
-
+            srand(time(0));
             int temp;
             for(int j=1;j<=6;j++)
             {
@@ -425,6 +427,7 @@ void ScoreUpdate()
                         int r_out = rand()%3+1;
                         team[B_team].batsman[strk].runsScored += r_out-1;
                         team[B_team].total_runs += r_out-1;
+                        team[F_team].bowler[bow].runsLossed += r_out-1;
                         if(r_out == 1 || r_out==3){
                             if(strk == Striker1){
                                 Striker2++;
@@ -452,6 +455,7 @@ void ScoreUpdate()
                         int r_out = rand()%3+1;
                         team[B_team].batsman[strk].runsScored += r_out-1;
                         team[B_team].total_runs += r_out-1;
+                        team[F_team].bowler[bow].runsLossed +=r_out-1;
                         if(r_out == 1 || r_out==3){
                             if(strk == Striker2){
                                 Striker2++;
