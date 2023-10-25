@@ -35,6 +35,7 @@ int number_of_overs=2;
 int B_team,F_team;
 int toss;
 int strk,Striker1 = 0,Striker2 = 1,bow = 0;
+int thisOver[8],tO=0;
 
 void getTeamAndPlayerNames()
 {
@@ -82,6 +83,7 @@ void ScoreUpdate()
             team[B_team].total_over[0] = i;
 
             int temp;
+            tO = 0;
             for(int j=1;j<=6;j++)
             {
 
@@ -90,6 +92,8 @@ void ScoreUpdate()
                 srand(time(0));
                 temp = rand()%11;
                 fprintf(WS,"Ball %d.%d : %d\t",i,j,temp);
+                thisOver[tO] = temp;
+                tO++;
 
                 if(temp == 5)
                 {
@@ -140,10 +144,10 @@ void ScoreUpdate()
                     fprintf(WS,"By : %d\t",temp);
                     team[B_team].total_runs += temp;
                     team[F_team].bowler[bow].runsLossed += temp;
-                    team[B_team].batsman[strk].runsScored += temp;
+                    //team[B_team].batsman[strk].runsScored += temp;
                     team[B_team].batsman[strk].played_ball++;
                 }
-                else if(temp == 9)
+                else if((temp == 9)&& (thisOver[tO-2]!=7))
                 {
                       //printf("Player %d has been out :");
                       team[B_team].Num_Wicket++;
@@ -251,7 +255,7 @@ void ScoreUpdate()
                     if(team[B_team].Num_Wicket==10)
                         break;
                 }
-                else
+                else if(temp <= 6)
                 {
                         if(temp == 6)
                         {
@@ -301,18 +305,21 @@ void ScoreUpdate()
                 strk = Striker1;
             }
             team[F_team].bowler[bow].over[0]++;
+            team[F_team].bowler[bow].over[1]=0;
             bow++;
             if(bow==5){
                 bow=0;
             }
     }
-    printf("\n%s set the target %d runs\n",team[B_team].name,team[B_team].total_runs+1);
+    ScoreTable1();
+    //printf("\n%s set the target %d runs\n",team[B_team].name,team[B_team].total_runs+1);
     B_team = 1;
     F_team = 0;
     strk = 0;
     Striker1 = 0;
     Striker2 = 1;
     bow = 0;
+    tO=0;
     printf("\n%s is going to bat now....\n\n",team[B_team].name);
     DisplayScoreBoard();
     for(int i=0;i<number_of_overs;i++)
@@ -320,6 +327,7 @@ void ScoreUpdate()
             team[B_team].total_over[0] = i;
             srand(time(0));
             int temp;
+            tO=0;
             for(int j=1;j<=6;j++)
             {
 
@@ -327,6 +335,8 @@ void ScoreUpdate()
                 //scanf("%d",&temp);
                 temp = rand()%11;
                 fprintf(WS,"Ball %d.%d : %d\t",i,j,temp);
+                thisOver[tO]=temp;
+                tO++;
 
                 if(temp == 5)
                 {
@@ -376,10 +386,10 @@ void ScoreUpdate()
                     fprintf(WS,"By : %d\t",temp);
                     team[B_team].total_runs += temp;
                     team[F_team].bowler[bow].runsLossed += temp;
-                    team[B_team].batsman[strk].runsScored += temp;
+                    //team[B_team].batsman[strk].runsScored += temp;
                     team[B_team].batsman[strk].played_ball++;
                 }
-                else if(temp == 9)
+                else if((temp == 9)&& (thisOver[tO-2]!=7))
                 {
                       //printf("Player %d has been out :");
                       team[B_team].Num_Wicket++;
@@ -483,7 +493,7 @@ void ScoreUpdate()
                     if(team[B_team].Num_Wicket==10)
                         break;
                 }
-                else{
+                else if(temp<=6){
 
 
                         if(temp == 6)
@@ -539,11 +549,13 @@ void ScoreUpdate()
                 strk = Striker1;
             }
             team[F_team].bowler[bow].over[0]++;
+            team[F_team].bowler[bow].over[1]=0;
             bow++;
             if(bow==5){
                 bow=0;
             }
     }
+
     //if((team[B_team].Num_Wicket==10) || (team[B_team].total_runs > team[F_team].total_runs)){
                     if(team[B_team].total_runs > team[F_team].total_runs){
                         printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d wicket...\n",team[B_team].name,(10-team[B_team].Num_Wicket));
@@ -555,6 +567,7 @@ void ScoreUpdate()
                         printf("\n\n\t\tCongratulations...\n\t\t%s win the match by %d runs...\n",team[F_team].name,(team[F_team].total_runs-team[B_team].total_runs));
 
                     }
+                    ScoreTable1();
 
 
             //}
@@ -564,19 +577,35 @@ void DisplayScoreBoard(){
     printf("\n-------------------------------------------------------------------------------------\n");
     printf("%s vs  | %s | %d / %d |",team[F_team].name,team[B_team].name,team[B_team].total_runs,team[B_team].Num_Wicket);
     printf(" %d . %d  |",team[B_team].total_over[0],team[B_team].total_over[1]);
-    printf("%s | %d / %d.%d  |\n",team[F_team].bowler[bow].playerName,team[F_team].bowler[bow].runsLossed,team[F_team].bowler[bow].over[0],team[F_team].bowler[bow].over[1]);
+    printf("%s | %d  (%d.%d)  |\n",team[F_team].bowler[bow].playerName,team[F_team].bowler[bow].runsLossed,team[F_team].bowler[bow].over[0],team[F_team].bowler[bow].over[1]);
     printf("-------------------------------------------------------------------------------------\n");
-    printf("%s \t|  %d / %d   | ",team[B_team].batsman[Striker1].playerName,team[B_team].batsman[Striker1].runsScored,team[B_team].batsman[Striker1].played_ball);
-    printf("%s \t|  %d / %d   |\n",team[B_team].batsman[Striker2].playerName,team[B_team].batsman[Striker2].runsScored,team[B_team].batsman[Striker2].played_ball);
-    printf("-------------------------------------------------------------------------------------\n");
+    printf("%s \t|  %d  (%d)   | ",team[B_team].batsman[Striker1].playerName,team[B_team].batsman[Striker1].runsScored,team[B_team].batsman[Striker1].played_ball);
+    printf("%s \t|  %d  (%d)   |",team[B_team].batsman[Striker2].playerName,team[B_team].batsman[Striker2].runsScored,team[B_team].batsman[Striker2].played_ball);
+    for(int i=0;i<tO;i++){
+        printf("%d ",thisOver[i]);
+    }
+    printf("|\n-------------------------------------------------------------------------------------\n");
 
     printf("NEXT");
     getchar();
 }
-/*
-int main(){
+/*int main(){
     getTeamAndPlayerNames();
     ScoreUpdate();
     return 0;
 }
 */
+
+void ScoreTable1(){
+    printf("\n\n\t\t %s\n",team[B_team].name);
+    for(int i=0;i<11;i++){
+        printf("%s\t\t\t%d(%d)\n",team[B_team].batsman[i].playerName,team[B_team].batsman[i].runsScored,team[B_team].batsman[i].played_ball);
+    }
+    printf("Total = %d / %d \t (%d.%d)\n",team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
+    printf("\n\n\t\t %s\n",team[F_team].name);
+    for(int i=0;i<5;i++){
+        printf("%s\t\t %d \t %d \t (%d.%d)\n",team[F_team].bowler[i].playerName,team[F_team].bowler[i].runsLossed,team[F_team].bowler[i].wicket, team[F_team].bowler[i].over[0],team[F_team].bowler[i].over[1]);
+
+    }
+    printf("\n\n");
+}
