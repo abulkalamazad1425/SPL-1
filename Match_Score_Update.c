@@ -31,11 +31,17 @@ struct Details
 
 }team[2];
 
-int number_of_overs=2;
+
+
+int number_of_overs=6;
 int B_team,F_team;
 int toss;
 int strk,Striker1 = 0,Striker2 = 1,bow = 0;
 int thisOver[8],tO=0;
+int IndexArr[11],IndexArrW[11];
+
+
+
 
 void getTeamAndPlayerNames()
 {
@@ -80,12 +86,14 @@ void ScoreUpdate()
     DisplayScoreBoard();
     for(int i=0;i<number_of_overs;i++)
     {
-            team[B_team].total_over[0] = i;
+
+            //team[B_team].total_over[0] = i;
 
             int temp;
             tO = 0;
             for(int j=1;j<=6;j++)
             {
+
 
                 //printf("\nOver %d.%d \nEnter  the score : ",i,j);
                 //scanf("%d",&temp);
@@ -304,6 +312,10 @@ void ScoreUpdate()
             {
                 strk = Striker1;
             }
+            team[B_team].total_over[0]++;
+            team[B_team].total_over[1] = 0;
+
+
             team[F_team].bowler[bow].over[0]++;
             team[F_team].bowler[bow].over[1]=0;
             bow++;
@@ -324,7 +336,8 @@ void ScoreUpdate()
     DisplayScoreBoard();
     for(int i=0;i<number_of_overs;i++)
     {
-            team[B_team].total_over[0] = i;
+
+            //team[B_team].total_over[0] = i;
             srand(time(0));
             int temp;
             tO=0;
@@ -548,6 +561,8 @@ void ScoreUpdate()
             else{
                 strk = Striker1;
             }
+            team[B_team].total_over[0]++;
+            team[B_team].total_over[1] = 0;
             team[F_team].bowler[bow].over[0]++;
             team[F_team].bowler[bow].over[1]=0;
             bow++;
@@ -589,23 +604,186 @@ void DisplayScoreBoard(){
     printf("NEXT");
     getchar();
 }
-/*int main(){
+int main(){
     getTeamAndPlayerNames();
     ScoreUpdate();
+    SummaryTable();
     return 0;
 }
-*/
+
 
 void ScoreTable1(){
     printf("\n\n\t\t %s\n",team[B_team].name);
     for(int i=0;i<11;i++){
-        printf("%s\t\t\t%d(%d)\n",team[B_team].batsman[i].playerName,team[B_team].batsman[i].runsScored,team[B_team].batsman[i].played_ball);
+        printf("%10s\t\t\t%d(%d)\n",team[B_team].batsman[i].playerName,team[B_team].batsman[i].runsScored,team[B_team].batsman[i].played_ball);
     }
     printf("Total = %d / %d \t (%d.%d)\n",team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
     printf("\n\n\t\t %s\n",team[F_team].name);
     for(int i=0;i<5;i++){
-        printf("%s\t\t %d \t %d \t (%d.%d)\n",team[F_team].bowler[i].playerName,team[F_team].bowler[i].runsLossed,team[F_team].bowler[i].wicket, team[F_team].bowler[i].over[0],team[F_team].bowler[i].over[1]);
+        printf("%10s\t\t %d \t %d \t (%d.%d)\n",team[F_team].bowler[i].playerName,team[F_team].bowler[i].runsLossed,team[F_team].bowler[i].wicket, team[F_team].bowler[i].over[0],team[F_team].bowler[i].over[1]);
 
     }
     printf("\n\n");
+}
+
+void SummaryTable(){
+
+    for(int i=0;i<11;i++){
+        IndexArr[i]=i;
+        IndexArrW[i]=i;
+    }
+    B_team = 1;
+    F_team = 0;
+
+    MergeSort(0,10);
+    MergeSortByWicket(0,4);
+
+    printf("\n\n\t\t %s\t %d/%d\t(%d.%d)\n",team[B_team].name,team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
+    printf("\t\t===========================\n");
+    for(int i=0;i<3;i++){
+        printf("\t%s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
+        printf(" %s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
+    }
+    printf("\t\t===========================\n");
+
+
+     for(int i=0;i<11;i++){
+        IndexArr[i]=i;
+        IndexArrW[i]=i;
+    }
+    B_team = 0;
+    F_team = 1;
+
+    MergeSort(0,10);
+    MergeSortByWicket(0,4);
+
+    printf("\n\n\t\t %s\t %d/%d\t(%d.%d)\n",team[B_team].name,team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
+    printf("\t\t===========================\n");
+    for(int i=0;i<3;i++){
+        printf("\t%s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
+        printf(" %s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
+    }
+    printf("\t\t===========================\n");
+
+}
+
+void MergeSort(int f,int l){
+    if(f<l){
+        int m = (f+l)/2;
+        MergeSort(f,m);
+        MergeSort(m+1,l);
+        Merge(f,m,l);
+    }
+}
+
+void Merge(int f,int m,int l){
+    int i,j,k;
+    int n1 = m-f+1;
+    int n2 = l-m;
+    int L[n1],R[n2];
+    for(i=0;i<n1;i++){
+        L[i] = IndexArr[f+i];
+    }
+    for(j=0;j<n2;j++){
+        R[j] = IndexArr[m+j+1];
+    }
+
+    i=0;
+    j=0;
+    for(k=f;(k<=l) && (i<n1) && (j<n2);k++){
+        //if(value[L[i]] <= value[R[j]]){
+        if(team[B_team].batsman[L[i]].runsScored > team[B_team].batsman[R[j]].runsScored){
+            IndexArr[k] = L[i];
+            i++;
+        }
+        else if(team[B_team].batsman[L[i]].runsScored == team[B_team].batsman[R[j]].runsScored){
+            if(team[B_team].batsman[L[i]].played_ball <= team[B_team].batsman[R[j]].played_ball){
+                IndexArr[k] = L[i];
+                i++;
+            }
+            else{
+               IndexArr[k] = R[j];
+               j++;
+            }
+        }
+        else{
+            IndexArr[k] = R[j];
+            j++;
+        }
+    }
+    if(i==n1){
+        for( ;k<=l;k++){
+            IndexArr[k] = R[j];
+            j++;
+        }
+    }
+
+    else if(j==n2){
+       for( ;k<=l;k++){
+            IndexArr[k] = L[i];
+            i++;
+        }
+    }
+
+}
+
+
+
+void MergeSortByWicket(int f,int l){
+     if(f<l){
+        int m = (f+l)/2;
+        MergeSortByWicket(f,m);
+        MergeSortByWicket(m+1,l);
+        MergeforWicket(f,m,l);
+    }
+}
+void MergeforWicket(int f,int m,int l){
+    int i,j,k;
+    int n1 = m-f+1;
+    int n2 = l-m;
+    int L[n1],R[n2];
+    for(i=0;i<n1;i++){
+        L[i] = IndexArrW[f+i];
+    }
+    for(j=0;j<n2;j++){
+        R[j] = IndexArrW[m+j+1];
+    }
+
+    i=0;
+    j=0;
+    for(k=f;(k<=l) && (i<n1) && (j<n2);k++){
+        if(team[F_team].bowler[L[i]].wicket >
+            team[F_team].bowler[R[j]].wicket){
+            IndexArrW[k] = L[i];
+            i++;
+        }
+        else if(team[F_team].bowler[L[i]].wicket == team[F_team].bowler[R[j]].wicket){
+            if(team[F_team].bowler[L[i]].runsLossed <= team[F_team].bowler[R[j]].runsLossed){
+                IndexArrW[k] = L[i];
+                i++;
+            }
+            else{
+               IndexArrW[k] = R[j];
+               j++;
+            }
+        }
+        else{
+            IndexArrW[k] = R[j];
+            j++;
+        }
+    }
+    if(i==n1){
+            for( ;k<=l;k++){
+                IndexArr[k] = R[j];
+                j++;
+            }
+    }
+
+    else if(j==n2){
+           for( ;k<=l;k++){
+                IndexArrW[k] = L[i];
+                i++;
+            }
+    }
+
 }
