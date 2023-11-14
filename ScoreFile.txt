@@ -1,0 +1,16 @@
+Ball 0.1 : 1	
+Ball 0.2 : 7	extra : 6	
+Ball 0.2 : 7	extra : 6	
+Ball 0.2 : 0	
+Ball 0.3 : 0	
+Ball 0.4 : 3	
+Ball 0.5 : 3	
+Ball 0.6 : 6	
+Ball 0.1 : 4	
+Ball 0.2 : 8	By : 3	
+Ball 0.3 : 5	
+Ball 0.3 : 0	
+Ball 0.4 : 8	By : 4	
+Ball 0.5 : 3	
+Ball 0.6 : 7	extra : 3	
+Ball 0.6 : 6	

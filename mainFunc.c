@@ -5,7 +5,9 @@ int main(){
     while(option){
             printf("1. Upcoming Matches.\n");
             printf("2. Schedule a Tournament.\n");
+
             printf("3. Player Information.\n");
+            printf("4. Ongoing Match Score Update.\n");
             printf("Select One( 0 for quit) : ");
             scanf("%d",&option);
 
@@ -15,6 +17,9 @@ int main(){
                 PremierLeagueScheduling();
             else if(option == 3)
                 PlayerInformation();
+            else if(option == 4){
+                UpdateScore();
+            }
             else
                 printf("Choose correctly");
     }

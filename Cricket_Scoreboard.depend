@@ -24,7 +24,7 @@
 	<math.h>
 	<string.h>
 
-1697308157 source:c:\users\asus\desktop\third semester\lab_all\3rdsemlab\spl-1\cricket_scoreboard\mainfunc.c
+1699246622 source:c:\users\asus\desktop\third semester\lab_all\3rdsemlab\spl-1\cricket_scoreboard\mainfunc.c
 	<stdio.h>
 
 1697308157 source:c:\users\asus\desktop\third semester\lab_all\3rdsemlab\spl-1\cricket_scoreboard\match_schedule.c
@@ -33,7 +33,7 @@
 	<stdbool.h>
 	<string.h>
 
-1697308157 source:c:\users\asus\desktop\third semester\lab_all\3rdsemlab\spl-1\cricket_scoreboard\match_score_update.c
+1699247897 source:c:\users\asus\desktop\third semester\lab_all\3rdsemlab\spl-1\cricket_scoreboard\match_score_update.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

@@ -7,6 +7,18 @@ int num_matches = 0;
 char ListOfMatches[100][2][20];
 int Round1Matches;
 
+void SingleElimination(int numOfQualifiedTeam){
+
+    for(int i=0;i<numOfQualifiedTeam/2;i++){
+        num_matches++;
+        strcpy(ListOfMatches[num_matches][0],ArrayOfTeams[i]);
+        strcpy(ListOfMatches[num_matches][1],ArrayOfTeams[numOfQualifiedTeam-i-1]);
+
+    }
+
+}
+
+
 
 void roundRobinTournament(int numOfTeams )
 
@@ -29,7 +41,6 @@ void roundRobinTournament(int numOfTeams )
                 if( strcmp(ArrayOfTeams[i],"NULL") && strcmp(ArrayOfTeams[numOfTeams-i],"NULL"))
                 {
                     num_matches++;
-                    //printf("Match %d : %s vs %s\n",++num_matches,ArrayOfTeams[i],ArrayOfTeams[numOfTeams-i]);
                     strcpy(ListOfMatches[num_matches][0],ArrayOfTeams[i]);
                     strcpy(ListOfMatches[num_matches][1],ArrayOfTeams[numOfTeams-i]);
 
@@ -50,6 +61,8 @@ void roundRobinTournament(int numOfTeams )
 }
 
 
+
+
 void PremierLeagueScheduling()
 {
     int numOfTeams;
@@ -62,7 +75,8 @@ void PremierLeagueScheduling()
     printf("\nWhat do you want :\n");
     printf("1. BPL Scheduling.\n");
     printf("2. IPL Scheduling.\n");
-    printf("Enter your choice(1 or 2) : ");
+    printf("3. IITPL Scheduling.\n");
+    printf("Enter your choice(1,2 or 3) : ");
     scanf("%d",&choice);
 
     FILE *MP;
@@ -74,6 +88,9 @@ void PremierLeagueScheduling()
        MP = fopen("IPL_PremierLeagueInput.txt","r");
 
     }
+    else if(choice == 3){
+        MP = fopen("IITPL_SchedulingInput.txt","r");
+    }
 
     if(MP == NULL)
     {
@@ -84,11 +101,9 @@ void PremierLeagueScheduling()
     }
 
 
-    //How many team will participate
     fscanf(MP,"%d",&numOfTeams);
 
-    //char *ArrayOfTeams[numOfTeams + 1];
-    //Take the name of all team those are participating from file
+
     for(int i=0;i<numOfTeams;i++)
     {
 
@@ -96,19 +111,24 @@ void PremierLeagueScheduling()
 
     }
 
-    //Number of venues
     fscanf(MP,"%d",&numVenue);
 
     char Venue[numVenue][20];
-    //Take the name of venues from file
     for(int i=0;i<numVenue;i++)
         {
         fscanf(MP,"%s",Venue[i]);
     }
+    fscanf(MP,"%d",&date);
+    fscanf(MP,"%d",&month);
+    fscanf(MP,"%d",&year);
 
-    //printf("Round 1:\n");
-    roundRobinTournament(numOfTeams );
-    roundRobinTournament(numOfTeams );
+    if(choice == 3){
+        roundRobinTournament(numOfTeams );
+    }
+    else{
+        roundRobinTournament(numOfTeams );
+        roundRobinTournament(numOfTeams );
+    }
 
     Round1Matches = num_matches;
     int numOfQualifiedTeam = 4;
@@ -118,12 +138,10 @@ void PremierLeagueScheduling()
     strcpy(ArrayOfTeams[2],"Qualifier-3");
     strcpy(ArrayOfTeams[3],"Qualifier-4");
 
-    roundRobinTournament(numOfQualifiedTeam );
+    SingleElimination(numOfQualifiedTeam);
 
-    //Starting date of the premier League
-    fscanf(MP,"%d",&date);
-    fscanf(MP,"%d",&month);
-    fscanf(MP,"%d",&year);
+
+
 
     printf("\nRound 1:\n");
     for(int i=1;i <= num_matches ;i++)
@@ -153,7 +171,7 @@ void PremierLeagueScheduling()
     date = date+3;
     printf("\nFinal :\n");
     printf("Match %d :\t Finalist-1 vs Finalist-2\t %d.%d.%d\t Dhalka\n",num_matches+1,date,month,year);
-
+    num_matches=0;
     fclose(MP);
     return;
 }

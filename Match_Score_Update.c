@@ -33,7 +33,7 @@ struct Details
 
 
 
-int number_of_overs=6;
+int number_of_overs=3;
 int B_team,F_team;
 int toss;
 int strk,Striker1 = 0,Striker2 = 1,bow = 0;
@@ -604,7 +604,10 @@ void DisplayScoreBoard(){
     printf("NEXT");
     getchar();
 }
-int main(){
+
+int UpdateScore(){
+    printf("\nEnter the number of over: ");
+    scanf("%d",&number_of_overs);
     getTeamAndPlayerNames();
     ScoreUpdate();
     SummaryTable();
@@ -615,12 +618,12 @@ int main(){
 void ScoreTable1(){
     printf("\n\n\t\t %s\n",team[B_team].name);
     for(int i=0;i<11;i++){
-        printf("%10s\t\t\t%d(%d)\n",team[B_team].batsman[i].playerName,team[B_team].batsman[i].runsScored,team[B_team].batsman[i].played_ball);
+        printf("%12s\t\t\t%d(%d)\n",team[B_team].batsman[i].playerName,team[B_team].batsman[i].runsScored,team[B_team].batsman[i].played_ball);
     }
     printf("Total = %d / %d \t (%d.%d)\n",team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
     printf("\n\n\t\t %s\n",team[F_team].name);
     for(int i=0;i<5;i++){
-        printf("%10s\t\t %d \t %d \t (%d.%d)\n",team[F_team].bowler[i].playerName,team[F_team].bowler[i].runsLossed,team[F_team].bowler[i].wicket, team[F_team].bowler[i].over[0],team[F_team].bowler[i].over[1]);
+        printf("%12s\t\t %d \t %d \t (%d.%d)\n",team[F_team].bowler[i].playerName,team[F_team].bowler[i].runsLossed,team[F_team].bowler[i].wicket, team[F_team].bowler[i].over[0],team[F_team].bowler[i].over[1]);
 
     }
     printf("\n\n");
@@ -641,8 +644,8 @@ void SummaryTable(){
     printf("\n\n\t\t %s\t %d/%d\t(%d.%d)\n",team[B_team].name,team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
     printf("\t\t===========================\n");
     for(int i=0;i<3;i++){
-        printf("\t%s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
-        printf(" %s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
+        printf("\t%12s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
+        printf(" %12s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
     }
     printf("\t\t===========================\n");
 
@@ -660,8 +663,8 @@ void SummaryTable(){
     printf("\n\n\t\t %s\t %d/%d\t(%d.%d)\n",team[B_team].name,team[B_team].total_runs,team[B_team].Num_Wicket,team[B_team].total_over[0],team[B_team].total_over[1]);
     printf("\t\t===========================\n");
     for(int i=0;i<3;i++){
-        printf("\t%s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
-        printf(" %s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
+        printf("\t%12s\t %d(%d)\t",team[B_team].batsman[IndexArr[i]].playerName,team[B_team].batsman[IndexArr[i]].runsScored,team[B_team].batsman[IndexArr[i]].played_ball);
+        printf(" %12s\t %d/%d\n",team[F_team].bowler[IndexArrW[i]].playerName,team[F_team].bowler[IndexArrW[i]].runsLossed,team[F_team].bowler[IndexArrW[i]].wicket);
     }
     printf("\t\t===========================\n");
 
