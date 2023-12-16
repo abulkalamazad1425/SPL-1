@@ -1,6 +1,3 @@
-#ifndef RANDOMDECISSIONTREE_H_INCLUDED
-#define RANDOMDECISSIONTREE_H_INCLUDED
-
 #include <bits/stdc++.h>
 #include <vector>
 using namespace std;
@@ -26,7 +23,7 @@ double Thresold;
 struct node
 {
     int attribute_number, child_number;
-    string class_name ,internal_class_name;
+    string node_value ,node_name;
     double Thresold;
     double thresold[7];
     bool leaf = false;
@@ -82,14 +79,14 @@ struct node *create_tree()
     {
         root->row.push_back(values[i]);
     }
-    root->internal_class_name="ROOT";
+    root->node_name="ROOT";
     calculate_gain_value(root);
     root->child = new node *[root->child_number];
 
     node *children = new node();
     root->child[0] = children;
     if(root->attribute_number < 4){
-        children->internal_class_name = root->row[0].attribute_Info[root->attribute_number]; // Which catagory it divided
+        children->node_name = root->row[0].attribute_Info[root->attribute_number]; // Which catagory it divided
         int child_index = 0;
         string first_value = root->row[0].attribute_Info[root->attribute_number];
         for (int i = 0; i < root->row.size(); i++)
@@ -107,7 +104,7 @@ struct node *create_tree()
 
                 children = new node();
 
-                children->internal_class_name = root->row[i].attribute_Info[root->attribute_number];
+                children->node_name = root->row[i].attribute_Info[root->attribute_number];
 
                 root->child[++child_index] = children;
                 children->row.push_back(root->row[i]);
@@ -117,7 +114,7 @@ struct node *create_tree()
     }
     else if(root->attribute_number >= 4){
 
-        children->internal_class_name = "numericAttribute"+ std::to_string(root->attribute_number) +"<=" + std::to_string(root->Thresold);
+        children->node_name = "numericAttribute"+ std::to_string(root->attribute_number) +"<=" + std::to_string(root->Thresold);
         int child_index = 0;
         bool flag = false;
 
@@ -135,7 +132,7 @@ struct node *create_tree()
 
                 children = new node();
 
-                children->internal_class_name = "numericAttribute"+ std::to_string(root->attribute_number) +">" + std::to_string(root->Thresold);
+                children->node_name = "numericAttribute"+ std::to_string(root->attribute_number) +">" + std::to_string(root->Thresold);
 
                 root->child[++child_index] = children;
                 children->row.push_back(root->row[i]);
@@ -145,13 +142,13 @@ struct node *create_tree()
 
     }
     addChildren(children);
-    cout <<"\t"<<root->internal_class_name<<endl;
+    cout <<"\t"<<root->node_name<<endl;
 
     for(int cld=0;cld<root->child_number;cld++){
 
-        cout<< root->child[cld]->internal_class_name<<" ";
+        cout<< root->child[cld]->node_name<<" ";
         if(root->child[cld]->leaf)
-            cout<< root->child[cld]->class_name;
+            cout<< root->child[cld]->node_value;
         cout<<"     ";
 
     }
@@ -187,7 +184,7 @@ void addChildren(node *children)
     {
         children->leaf = true;
 
-        children->class_name = children->row[0].winner;
+        children->node_value = children->row[0].winner;
 
         return;
     }
@@ -199,7 +196,7 @@ void addChildren(node *children)
     node *new_child = new node();
 
     if(children->attribute_number < 4){
-        new_child->internal_class_name = children->row[0].attribute_Info[children->attribute_number];
+        new_child->node_name = children->row[0].attribute_Info[children->attribute_number];
 
         children->child[0] = new_child;
         int child_index = 0;
@@ -217,7 +214,7 @@ void addChildren(node *children)
                 addChildren(new_child);
 
                 new_child = new node();
-                new_child->internal_class_name = children->row[i].attribute_Info[children->attribute_number];
+                new_child->node_name = children->row[i].attribute_Info[children->attribute_number];
 
                 children->child[++child_index] = new_child;
 
@@ -229,14 +226,14 @@ void addChildren(node *children)
     else if(children->attribute_number >= 4){
         if(children->Thresold ==0 ){
             if(rand()%2==0)
-                children->class_name = "Pakistan";
+                children->node_value = "Pakistan";
             else
-                children->class_name = "India";
+                children->node_value = "India";
             children->leaf=true;
             return;
         }
 
-        new_child->internal_class_name = "numericAttribute"+ std::to_string(children->attribute_number) +"<=" + std::to_string(children->Thresold);
+        new_child->node_name = "numericAttribute"+ std::to_string(children->attribute_number) +"<=" + std::to_string(children->Thresold);
 
 
 
@@ -260,7 +257,7 @@ void addChildren(node *children)
 
                 new_child = new node();
                 children->child[++child_index] = new_child;
-                new_child->internal_class_name = "numericAttribute"+ std::to_string(children->attribute_number) +">" + std::to_string(children->Thresold);
+                new_child->node_name = "numericAttribute"+ std::to_string(children->attribute_number) +">" + std::to_string(children->Thresold);
 
 
 
@@ -273,13 +270,13 @@ void addChildren(node *children)
     }
 
     addChildren(new_child);
-    cout <<"\t"<<children->internal_class_name<<endl;
+    cout <<"\t"<<children->node_name<<endl;
 
     for(int cld=0;cld<children->child_number;cld++){
 
-        cout<< children->child[cld]->internal_class_name<<" ";
+        cout<< children->child[cld]->node_name<<" ";
         if(children->child[cld]->leaf)
-            cout<< children->child[cld]->class_name;
+            cout<< children->child[cld]->node_value;
         cout<<"     ";
 
 
@@ -330,13 +327,12 @@ double find_probability_value(string num, string class_value, int index, node *r
 int sorting_colum_number;
 
 
-void sortNumericAttribute(node *r,int column){
+
+void sortAttribute(node *r, int column)
+{
     sorting_colum_number = column;
     mergeSort(r->row,sorting_colum_number,0,r->row.size()-1);
-
 }
-
-
 
 void mergeS(std::vector<row_info> &arr,int sorting_colum_number, int left, int middle, int right) {
     int n1 = middle - left + 1;
@@ -352,11 +348,21 @@ void mergeS(std::vector<row_info> &arr,int sorting_colum_number, int left, int m
 
 
     while (i < n1 && j < n2) {
-        if (leftArr[i].numericAttribute_Info[sorting_colum_number] <= rightArr[j].numericAttribute_Info[sorting_colum_number]) {
-            arr[k++] = leftArr[i++];
-        } else {
-            arr[k++] = rightArr[j++];
+        if( sorting_colum_number >=4){
+            if (leftArr[i].numericAttribute_Info[sorting_colum_number] <= rightArr[j].numericAttribute_Info[sorting_colum_number]) {
+                arr[k++] = leftArr[i++];
+            } else {
+                arr[k++] = rightArr[j++];
+            }
         }
+        else{
+            if (leftArr[i].attribute_Info[sorting_colum_number] <= rightArr[j].attribute_Info[sorting_colum_number]) {
+                arr[k++] = leftArr[i++];
+            } else {
+                arr[k++] = rightArr[j++];
+            }
+        }
+
     }
 
 
@@ -369,6 +375,8 @@ void mergeS(std::vector<row_info> &arr,int sorting_colum_number, int left, int m
         arr[k++] = rightArr[j++];
     }
 }
+
+
 
 
 void mergeSort(std::vector<row_info> &arr,int sorting_colum_number, int left, int right) {
@@ -431,8 +439,9 @@ void calculate_gain_value(node *row_information)
         }
 
         else if(i >= 4){
+                sortAttribute(row_information, i);
 
-            sortNumericAttribute(row_information, i);
+            
 
             double lowestEntropy = 5;
              row_entropy = 0;
@@ -496,18 +505,10 @@ void calculate_gain_value(node *row_information)
 
         qualitativeAttribute_values.clear();
     }
-    if(row_information->attribute_number < 4)
-        sortAttribute(row_information, row_information->attribute_number);
-    else{
-       sortNumericAttribute(row_information, row_information->attribute_number);
-    }
+    sortAttribute(row_information, row_information->attribute_number);
+    
 }
-void sortAttribute(node *r, int column)
-{
-    sorting_colum_number = column;
-    std::sort(r->row.begin(), r->row.end(), [](const row_info &a, const row_info &b)
-              { return a.attribute_Info[sorting_colum_number] < b.attribute_Info[sorting_colum_number]; });
-}
+
 
 string find_decision(node *level_data, row_info test_data)
 {
@@ -519,7 +520,7 @@ string find_decision(node *level_data, row_info test_data)
     {
 
 
-            ch = level_data->class_name;
+            ch = level_data->node_value;
 
 
     }
@@ -531,7 +532,7 @@ string find_decision(node *level_data, row_info test_data)
             for (i = 0; i < level_data->child_number; i++)
             {
 
-                if (level_data->child[i]->internal_class_name == test_data.attribute_Info[level_data->attribute_number])
+                if (level_data->child[i]->node_name == test_data.attribute_Info[level_data->attribute_number])
                 {
                     ch = find_decision(level_data->child[i], test_data);
                     break;
@@ -547,7 +548,7 @@ string find_decision(node *level_data, row_info test_data)
 
                 if((test_data.numericAttribute_Info[level_data->attribute_number] <= level_data->Thresold) ){
                     string childName = "numericAttribute"+ std::to_string(level_data->attribute_number) +"<=" + std::to_string(level_data->Thresold);
-                    if(level_data->child[0]->internal_class_name == childName){
+                    if(level_data->child[0]->node_name == childName){
 
                         ch = find_decision(level_data->child[0], test_data);
 
@@ -559,7 +560,7 @@ string find_decision(node *level_data, row_info test_data)
                 }
                 else{
                     string childName = "numericAttribute"+ std::to_string(level_data->attribute_number) +">" + std::to_string(level_data->Thresold);
-                    if(level_data->child[0]->internal_class_name == childName){
+                    if(level_data->child[0]->node_name == childName){
                         ch = find_decision(level_data->child[0], test_data);
 
                     }
@@ -580,7 +581,7 @@ bool testing(node *root, row_info test_data)
 
     if (ch == test_data.winner)
     {
-        //cout<<"true"<<endl;
+        
         return true;
     }
     else
@@ -636,5 +637,3 @@ int Prediction()
 
     return 0;
 }
-
-#endif // RANDOMDECISSIONTREE_H_INCLUDED
